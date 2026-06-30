@@ -24,7 +24,7 @@
         }
 
         .card {
-            background: rgba(26, 34, 58, 0.7);
+            background: rgba(26, 34, 58, 0.85);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-radius: 50px 20px 50px 20px;
@@ -75,6 +75,30 @@
         .subtitle i {
             font-size: 1.2rem;
             color: #ffc857;
+        }
+
+        /* عرض اسم المستخدم */
+        .name-display {
+            background: #0e1428;
+            border-radius: 60px;
+            padding: 12px 25px;
+            margin: 15px 0 20px;
+            text-align: center;
+            border: 1px solid #3f4a70;
+            font-size: 1.2rem;
+            color: #f5e7b0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .name-display.show {
+            display: flex;
+        }
+
+        .name-display i {
+            color: #f5c542;
         }
 
         .search-box {
@@ -157,66 +181,48 @@
             font-size: 1.6rem;
         }
 
-        .result-area {
+        /* رسالة نجاح البحث - تظهر بدلاً من الحسابات */
+        .search-success {
             background: #0e1428;
             border-radius: 30px;
-            padding: 18px 22px;
+            padding: 25px 22px;
             margin-top: 20px;
             border: 1px solid #2a3457;
             display: none;
             flex-direction: column;
-            gap: 12px;
+            align-items: center;
+            gap: 15px;
+            text-align: center;
             transition: 0.3s;
         }
 
-        .result-area.show {
+        .search-success.show {
             display: flex;
         }
 
-        .result-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: #1a213b;
-            padding: 10px 18px;
-            border-radius: 40px;
-            border-left: 4px solid #f5c542;
-            color: #d6defa;
-            font-weight: 500;
+        .search-success i {
+            font-size: 3rem;
+            color: #4caf50;
+            animation: pulse 1.5s ease-in-out infinite;
         }
 
-        .result-item i {
-            width: 28px;
-            color: #f5c542;
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .search-success h3 {
+            color: #f5e7b0;
             font-size: 1.3rem;
         }
 
-        .fake-message {
-            background: #282f4e;
-            border-radius: 30px;
-            padding: 18px 22px;
-            margin: 18px 0 12px;
-            text-align: center;
-            border: 1px solid #f5c542;
-            color: #f5e7b0;
-            font-weight: 500;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
+        .search-success p {
+            color: #9aa4c9;
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
-        .fake-message.show {
-            display: flex;
-        }
-
-        .fake-message i {
-            font-size: 1.8rem;
-            color: #ffb347;
-        }
-
-        /* حقل الرابط مع زر النسخ */
         .link-container {
             background: #0e1428;
             border-radius: 60px;
@@ -273,6 +279,31 @@
             font-size: 1.1rem;
         }
 
+        .fake-message {
+            background: #282f4e;
+            border-radius: 30px;
+            padding: 18px 22px;
+            margin: 18px 0 12px;
+            text-align: center;
+            border: 1px solid #f5c542;
+            color: #f5e7b0;
+            font-weight: 500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .fake-message.show {
+            display: flex;
+        }
+
+        .fake-message i {
+            font-size: 1.8rem;
+            color: #ffb347;
+        }
+
         .btn-share {
             background: #2a335a;
             border: none;
@@ -327,25 +358,29 @@
             color: #e74c6f;
         }
 
-        .footer-note {
+        .footer-real {
             margin-top: 30px;
             text-align: center;
             font-size: 0.85rem;
-            color: #606b94;
-            border-top: 1px solid #25305a;
+            color: #4a5580;
+            border-top: 1px solid #1f284a;
             padding-top: 20px;
             letter-spacing: 0.5px;
             display: flex;
             justify-content: center;
-            gap: 8px;
+            gap: 15px;
             flex-wrap: wrap;
         }
 
-        .footer-note i {
-            color: #f5c542;
+        .footer-real span {
+            color: #5a6a9a;
         }
 
-        /* رسالة نجاح النسخ */
+        .footer-real i {
+            color: #f5c542;
+            opacity: 0.5;
+        }
+
         .copy-toast {
             position: fixed;
             bottom: 30px;
@@ -383,6 +418,7 @@
             .info-note { flex-direction: column; text-align: center; }
             .link-container { flex-wrap: wrap; justify-content: center; }
             .link-container input { width: 100%; text-align: center; }
+            .trick-message { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
@@ -392,8 +428,14 @@
     <div class="header">
         <h1><i class="fas fa-user-secret"></i> الباحث الإجتماعي</h1>
         <div class="subtitle">
-            <i class="fas fa-search-location"></i> اكتشف حسابات الشخص المخفية
+            <i class="fas fa-search-location"></i> إكتشف حسابات الشخص المخفية
         </div>
+    </div>
+
+    <!-- عرض اسم المستخدم -->
+    <div id="nameDisplay" class="name-display">
+        <i class="fas fa-user-circle"></i>
+        <span id="displayedName">محمد علي</span>
     </div>
 
     <div class="search-box">
@@ -406,28 +448,20 @@
         <span>⚡ نظام البحث الذكي يتطلب مشاركة الرابط مع 10 مجموعات للكشف عن الحسابات</span>
     </div>
 
-    <!-- منطقة النتائج -->
-    <div id="resultArea" class="result-area">
-        <div class="result-item"><i class="fab fa-facebook-f"></i> فيسبوك: <span style="color:#f5c542;">ahmed_x_2024</span></div>
-        <div class="result-item"><i class="fab fa-instagram"></i> إنستغرام: <span style="color:#f5c542;">ahmed_insta_eg</span></div>
-        <div class="result-item"><i class="fab fa-twitter"></i> تويتر (X): <span style="color:#f5c542;">@ahmed_twit</span></div>
-        <div class="result-item"><i class="fab fa-tiktok"></i> تيك توك: <span style="color:#f5c542;">ahmed_tok</span></div>
-        <div class="result-item"><i class="fab fa-linkedin-in"></i> لينكدإن: <span style="color:#f5c542;">ahmed-linked</span></div>
+    <!-- رسالة نجاح البحث (بدلاً من الحسابات) -->
+    <div id="searchSuccess" class="search-success">
+        <i class="fas fa-check-circle"></i>
+        <h3>✅ تم العثور على الحسابات!</h3>
+        <p>الآن شارك الرابط في <strong>10 مجموعات</strong> فيسبوك وواتساب لتفعيل العرض</p>
     </div>
 
-    <!-- حقل الرابط مع زر النسخ -->
+    <!-- حقل الرابط -->
     <div id="linkContainer" class="link-container">
         <i class="fas fa-link" style="color: #f5c542; font-size: 1.2rem;"></i>
-        <input type="text" id="siteLink" value="https://social-finder.vercel.app" readonly>
+        <input type="text" id="siteLink" value="https://social-media-finder8.vercel.app" readonly>
         <button class="copy-btn" id="copyLinkBtn">
             <i class="fas fa-copy"></i> نسخ الرابط
         </button>
-    </div>
-
-    <!-- رسالة "شارك الرابط" -->
-    <div id="shareMessage" class="fake-message">
-        <i class="fas fa-share-alt"></i>
-        <span id="shareText">تم العثور على الحسابات! الآن شارك الرابط في 10 مجموعات لتفعيل العرض</span>
     </div>
 
     <!-- زر "تم المشاركة" -->
@@ -435,22 +469,24 @@
         <i class="fas fa-check-circle"></i> تم المشاركة
     </button>
 
-    <!-- رسالة الخدعة النهائية -->
+    <!-- رسالة الخدعة -->
     <div id="trickMessage" class="trick-message">
         <i class="fas fa-skull"></i>
         <div>
             <strong>😈 لم تتم مشاركة الرابط في 10 قروب!</strong><br>
-            <span style="font-size:0.9rem; opacity:0.8;">(هذا مجرد فيلم إجرامي يا صديقي 🎬)</span>
+            <span style="font-size:0.9rem; opacity:0.8;">(خطأ في المشاركة، يرجى المحاولة لاحقاً)</span>
         </div>
     </div>
 
-    <div class="footer-note">
-        <i class="fas fa-film"></i> للمتعة والتعلم فقط .. لا تقم بإعادة التوجيه الحقيقي
-        <i class="fas fa-mask"></i>
+    <!-- تذييل واقعي -->
+    <div class="footer-real">
+        <span><i class="fas fa-shield-alt"></i> © 2014 - 2026 جميع الحقوق محفوظة</span>
+        <span><i class="fas fa-database"></i> نظام البحث الإجتماعي v4.2</span>
+        <span><i class="fas fa-lock"></i> تشفير SSL 256-bit</span>
     </div>
 </div>
 
-<!-- رسالة نجاح النسخ -->
+<!-- رسالة نسخ الرابط -->
 <div id="copyToast" class="copy-toast">
     <i class="fas fa-check-circle" style="color: #4caf50;"></i>
     <span>✅ تم نسخ الرابط بنجاح!</span>
@@ -460,18 +496,17 @@
     (function() {
         const searchBtn = document.getElementById('searchBtn');
         const searchInput = document.getElementById('searchInput');
-        const resultArea = document.getElementById('resultArea');
         const shareBtn = document.getElementById('shareBtn');
         const trickMessage = document.getElementById('trickMessage');
-        const shareMessage = document.getElementById('shareMessage');
-        const shareText = document.getElementById('shareText');
         const linkContainer = document.getElementById('linkContainer');
         const copyBtn = document.getElementById('copyLinkBtn');
         const siteLink = document.getElementById('siteLink');
         const copyToast = document.getElementById('copyToast');
+        const nameDisplay = document.getElementById('nameDisplay');
+        const displayedName = document.getElementById('displayedName');
+        const searchSuccess = document.getElementById('searchSuccess');
 
-        // تغيير الرابط هنا حسب موقعك على Vercel
-        // مثلاً: https://اسم-مشروعك.vercel.app
+        // رابط الموقع
         const MY_SITE_URL = 'https://social-media-finder8.vercel.app';
         siteLink.value = MY_SITE_URL;
 
@@ -479,13 +514,20 @@
         searchBtn.addEventListener('click', function(e) {
             e.preventDefault();
             
-            resultArea.classList.add('show');
-            linkContainer.classList.add('show'); // إظهار الرابط
-            shareMessage.classList.add('show');
-            shareText.textContent = 'تم العثور على الحسابات! الآن شارك الرابط في 10 مجموعات لتفعيل العرض';
+            const inputValue = searchInput.value.trim();
+            if (inputValue !== '') {
+                displayedName.textContent = inputValue;
+                nameDisplay.classList.add('show');
+            }
+
+            // إظهار رسالة النجاح بدلاً من الحسابات
+            searchSuccess.classList.add('show');
+            linkContainer.classList.add('show');
             
+            // إخفاء أي رسائل سابقة
             trickMessage.classList.remove('show');
             
+            // إعادة زر المشاركة
             shareBtn.innerHTML = `<i class="fas fa-check-circle"></i> تم المشاركة`;
             shareBtn.style.background = '#2a335a';
             shareBtn.style.borderColor = '#4f5b88';
@@ -496,17 +538,15 @@
         copyBtn.addEventListener('click', function(e) {
             e.preventDefault();
             
-            // تحديد النص ونسخه
             siteLink.select();
             siteLink.setSelectionRange(0, 99999);
+            
             navigator.clipboard.writeText(siteLink.value).then(() => {
-                // إظهار رسالة نجاح
                 copyToast.classList.add('show');
                 setTimeout(() => {
                     copyToast.classList.remove('show');
                 }, 2000);
             }).catch(() => {
-                // طريقة بديلة للنسخ
                 document.execCommand('copy');
                 copyToast.classList.add('show');
                 setTimeout(() => {
@@ -515,20 +555,20 @@
             });
         });
 
-        // عند الضغط على "تم المشاركة"
+        // زر "تم المشاركة"
         shareBtn.addEventListener('click', function(e) {
             e.preventDefault();
 
-            if (!resultArea.classList.contains('show')) {
-                resultArea.classList.add('show');
+            // إذا لم يبحث بعد، نظهر رسالة البحث أولاً
+            if (!searchSuccess.classList.contains('show')) {
+                searchSuccess.classList.add('show');
                 linkContainer.classList.add('show');
-                shareMessage.classList.add('show');
-                shareText.textContent = 'تم العثور على الحسابات! الآن شارك الرابط في 10 مجموعات لتفعيل العرض';
             }
 
+            // إظهار رسالة الخدعة
             trickMessage.classList.add('show');
-            shareText.textContent = '⚠️ لم تتم مشاركة الرابط في 10 قروب!';
             
+            // تغيير زر المشاركة
             shareBtn.innerHTML = `<i class="fas fa-times-circle"></i> لم تتم المشاركة`;
             shareBtn.style.background = '#3d1f2c';
             shareBtn.style.borderColor = '#e74c6f';
@@ -551,13 +591,13 @@
         });
 
         // إخفاء العناصر عند التحميل
-        resultArea.classList.remove('show');
+        searchSuccess.classList.remove('show');
         linkContainer.classList.remove('show');
-        shareMessage.classList.remove('show');
         trickMessage.classList.remove('show');
+        nameDisplay.classList.remove('show');
     })();
 </script>
 
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 </body>
-</html>
+    </html>
