@@ -62,7 +62,7 @@
 
         .subtitle {
             color: #9aa4c9;
-            font-size: 1.1rem;
+            font-size: 1rem;
             margin-top: 8px;
             border-bottom: 1px dashed #3a4466;
             padding-bottom: 15px;
@@ -77,7 +77,6 @@
             color: #ffc857;
         }
 
-        /* عرض اسم المستخدم */
         .name-display {
             background: #0e1428;
             border-radius: 60px;
@@ -109,13 +108,18 @@
             align-items: center;
             border: 1px solid #3f4a70;
             transition: 0.3s;
-            margin: 25px 0 20px;
+            margin: 25px 0 5px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.5);
         }
 
         .search-box:focus-within {
             border-color: #f5c542;
             box-shadow: 0 0 0 4px rgba(245, 197, 66, 0.2);
+        }
+
+        .search-box.error {
+            border-color: #e74c6f;
+            box-shadow: 0 0 0 4px rgba(231, 76, 111, 0.3);
         }
 
         .search-box input {
@@ -163,6 +167,35 @@
             font-size: 1.2rem;
         }
 
+        .error-message {
+            background: #3d1f2c;
+            border-radius: 30px;
+            padding: 12px 22px;
+            margin: 10px 0 15px;
+            border-right: 5px solid #e74c6f;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            color: #ffc9d6;
+            font-size: 0.95rem;
+            animation: shake 0.4s ease;
+        }
+
+        .error-message.show {
+            display: flex;
+        }
+
+        .error-message i {
+            color: #e74c6f;
+            font-size: 1.3rem;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
         .info-note {
             background: #1d2440;
             border-radius: 30px;
@@ -181,7 +214,6 @@
             font-size: 1.6rem;
         }
 
-        /* رسالة نجاح البحث - تظهر بدلاً من الحسابات */
         .search-success {
             background: #0e1428;
             border-radius: 30px;
@@ -221,6 +253,11 @@
             color: #9aa4c9;
             font-size: 0.95rem;
             line-height: 1.6;
+        }
+
+        .search-success .highlight {
+            color: #f5c542;
+            font-weight: bold;
         }
 
         .link-container {
@@ -279,31 +316,6 @@
             font-size: 1.1rem;
         }
 
-        .fake-message {
-            background: #282f4e;
-            border-radius: 30px;
-            padding: 18px 22px;
-            margin: 18px 0 12px;
-            text-align: center;
-            border: 1px solid #f5c542;
-            color: #f5e7b0;
-            font-weight: 500;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .fake-message.show {
-            display: flex;
-        }
-
-        .fake-message i {
-            font-size: 1.8rem;
-            color: #ffb347;
-        }
-
         .btn-share {
             background: #2a335a;
             border: none;
@@ -317,11 +329,15 @@
             width: 100%;
             margin-top: 10px;
             font-family: inherit;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             gap: 15px;
             border: 1px solid #4f5b88;
+        }
+
+        .btn-share.show {
+            display: flex;
         }
 
         .btn-share:hover {
@@ -334,6 +350,7 @@
             font-size: 1.4rem;
         }
 
+        /* رسالة الخطأ الجديدة - بدون إيموجي 😈 */
         .trick-message {
             background: #3d1f2c;
             border-radius: 30px;
@@ -432,30 +449,32 @@
         </div>
     </div>
 
-    <!-- عرض اسم المستخدم -->
     <div id="nameDisplay" class="name-display">
         <i class="fas fa-user-circle"></i>
         <span id="displayedName">محمد علي</span>
     </div>
 
-    <div class="search-box">
+    <div class="search-box" id="searchBox">
         <input type="text" id="searchInput" placeholder="🔎 رقم الجوال أو اسم المستخدم ...">
         <button id="searchBtn"><i class="fas fa-arrow-left"></i> إبحث</button>
     </div>
 
-    <div class="info-note">
-        <i class="fas fa-robot"></i>
-        <span>⚡ نظام البحث الذكي يتطلب مشاركة الرابط مع 10 مجموعات للكشف عن الحسابات</span>
+    <div id="errorMessage" class="error-message">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>⚠️ الحقل فارغ! يرجى إدخال رقم الجوال أو اسم المستخدم</span>
     </div>
 
-    <!-- رسالة نجاح البحث (بدلاً من الحسابات) -->
+    <div class="info-note">
+        <i class="fas fa-shield-alt"></i>
+        <span>🔍 ابحث الآن عن الحسابات المخفية بواسطة رقم الهاتف أو اسم حساب الشخص</span>
+    </div>
+
     <div id="searchSuccess" class="search-success">
         <i class="fas fa-check-circle"></i>
         <h3>✅ تم العثور على الحسابات!</h3>
-        <p>الآن شارك الرابط في <strong>10 مجموعات</strong> فيسبوك وواتساب لتفعيل العرض</p>
+        <p>الآن شارك الرابط في <span class="highlight">10 مجموعات</span> فيسبوك وواتساب لتفعيل العرض</p>
     </div>
 
-    <!-- حقل الرابط -->
     <div id="linkContainer" class="link-container">
         <i class="fas fa-link" style="color: #f5c542; font-size: 1.2rem;"></i>
         <input type="text" id="siteLink" value="https://social-media-finder8.vercel.app" readonly>
@@ -464,21 +483,19 @@
         </button>
     </div>
 
-    <!-- زر "تم المشاركة" -->
     <button class="btn-share" id="shareBtn">
         <i class="fas fa-check-circle"></i> تم المشاركة
     </button>
 
-    <!-- رسالة الخدعة -->
+    <!-- رسالة الخطأ الجديدة - بدون إيموجي 😈 -->
     <div id="trickMessage" class="trick-message">
-        <i class="fas fa-skull"></i>
+        <i class="fas fa-exclamation-triangle"></i>
         <div>
-            <strong>😈 لم تتم مشاركة الرابط في 10 قروب!</strong><br>
-            <span style="font-size:0.9rem; opacity:0.8;">(خطأ في المشاركة، يرجى المحاولة لاحقاً)</span>
+            <strong>⚠️ لم تتم مشاركة الرابط في 10 مجموعات!</strong><br>
+            <span style="font-size:0.9rem; opacity:0.8;">حدث خطأ أثناء المشاركة، يرجى المحاولة لاحقاً</span>
         </div>
     </div>
 
-    <!-- تذييل واقعي -->
     <div class="footer-real">
         <span><i class="fas fa-shield-alt"></i> © 2014 - 2026 جميع الحقوق محفوظة</span>
         <span><i class="fas fa-database"></i> نظام البحث الإجتماعي v4.2</span>
@@ -486,7 +503,6 @@
     </div>
 </div>
 
-<!-- رسالة نسخ الرابط -->
 <div id="copyToast" class="copy-toast">
     <i class="fas fa-check-circle" style="color: #4caf50;"></i>
     <span>✅ تم نسخ الرابط بنجاح!</span>
@@ -496,6 +512,8 @@
     (function() {
         const searchBtn = document.getElementById('searchBtn');
         const searchInput = document.getElementById('searchInput');
+        const searchBox = document.getElementById('searchBox');
+        const errorMessage = document.getElementById('errorMessage');
         const shareBtn = document.getElementById('shareBtn');
         const trickMessage = document.getElementById('trickMessage');
         const linkContainer = document.getElementById('linkContainer');
@@ -506,35 +524,55 @@
         const displayedName = document.getElementById('displayedName');
         const searchSuccess = document.getElementById('searchSuccess');
 
-        // رابط الموقع
         const MY_SITE_URL = 'https://social-media-finder8.vercel.app';
         siteLink.value = MY_SITE_URL;
 
-        // عند البحث
+        function hideError() {
+            errorMessage.classList.remove('show');
+            searchBox.classList.remove('error');
+        }
+
+        function showError() {
+            errorMessage.classList.add('show');
+            searchBox.classList.add('error');
+            searchBox.style.animation = 'none';
+            setTimeout(() => {
+                searchBox.style.animation = 'shake 0.4s ease';
+            }, 10);
+            searchSuccess.classList.remove('show');
+            linkContainer.classList.remove('show');
+            shareBtn.classList.remove('show');
+            trickMessage.classList.remove('show');
+            nameDisplay.classList.remove('show');
+        }
+
         searchBtn.addEventListener('click', function(e) {
             e.preventDefault();
             
             const inputValue = searchInput.value.trim();
-            if (inputValue !== '') {
-                displayedName.textContent = inputValue;
-                nameDisplay.classList.add('show');
+            
+            if (inputValue === '') {
+                showError();
+                return;
             }
 
-            // إظهار رسالة النجاح بدلاً من الحسابات
+            hideError();
+
+            displayedName.textContent = inputValue;
+            nameDisplay.classList.add('show');
+
             searchSuccess.classList.add('show');
             linkContainer.classList.add('show');
+            shareBtn.classList.add('show');
             
-            // إخفاء أي رسائل سابقة
             trickMessage.classList.remove('show');
             
-            // إعادة زر المشاركة
             shareBtn.innerHTML = `<i class="fas fa-check-circle"></i> تم المشاركة`;
             shareBtn.style.background = '#2a335a';
             shareBtn.style.borderColor = '#4f5b88';
             shareBtn.style.color = '#f0f3ff';
         });
 
-        // نسخ الرابط
         copyBtn.addEventListener('click', function(e) {
             e.preventDefault();
             
@@ -555,20 +593,17 @@
             });
         });
 
-        // زر "تم المشاركة"
         shareBtn.addEventListener('click', function(e) {
             e.preventDefault();
 
-            // إذا لم يبحث بعد، نظهر رسالة البحث أولاً
             if (!searchSuccess.classList.contains('show')) {
                 searchSuccess.classList.add('show');
                 linkContainer.classList.add('show');
+                shareBtn.classList.add('show');
             }
 
-            // إظهار رسالة الخدعة
             trickMessage.classList.add('show');
             
-            // تغيير زر المشاركة
             shareBtn.innerHTML = `<i class="fas fa-times-circle"></i> لم تتم المشاركة`;
             shareBtn.style.background = '#3d1f2c';
             shareBtn.style.borderColor = '#e74c6f';
@@ -582,7 +617,6 @@
             }, 4000);
         });
 
-        // البحث بالضغط على Enter
         searchInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -590,11 +624,16 @@
             }
         });
 
-        // إخفاء العناصر عند التحميل
+        searchInput.addEventListener('input', function() {
+            hideError();
+        });
+
         searchSuccess.classList.remove('show');
         linkContainer.classList.remove('show');
+        shareBtn.classList.remove('show');
         trickMessage.classList.remove('show');
         nameDisplay.classList.remove('show');
+        errorMessage.classList.remove('show');
     })();
 </script>
 
