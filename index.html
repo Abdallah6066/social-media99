@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الباحث الإجتماعي - Social Media Finder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', 'Segoe UI', sans-serif;
+            background: linear-gradient(145deg, #0b0e1a 0%, #1a1f33 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #e3e9ff;
+        }
+
+        .card {
+            background: rgba(26, 34, 58, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 50px 20px 50px 20px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 215, 0, 0.15);
+            padding: 40px 35px;
+            max-width: 650px;
+            width: 100%;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f5d77b, #f0b34b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1px;
+            text-shadow: 0 0 20px rgba(245, 215, 123, 0.3);
+        }
+
+        .header i {
+            font-size: 2.8rem;
+            color: #f5d77b;
+            margin-left: 12px;
+            filter: drop-shadow(0 0 8px #f5b34b);
+        }
+
+        .subtitle {
+            color: #9aa4c9;
+            font-size: 1.1rem;
+            margin-top: 8px;
+            border-bottom: 1px dashed #3a4466;
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .subtitle i {
+            font-size: 1.2rem;
+            color: #ffc857;
+        }
+
+        .search-box {
+            background: #131a2e;
+            border-radius: 60px;
+            padding: 8px 8px 8px 25px;
+            display: flex;
+            align-items: center;
+            border: 1px solid #3f4a70;
+            transition: 0.3s;
+            margin: 25px 0 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+        }
+
+        .search-box:focus-within {
+            border-color: #f5c542;
+            box-shadow: 0 0 0 4px rgba(245, 197, 66, 0.2);
+        }
+
+        .search-box input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 18px 10px;
+            font-size: 1.1rem;
+            color: #f0f3ff;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .search-box input::placeholder {
+            color: #6e7aa3;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        .search-box button {
+            background: linear-gradient(145deg, #f5c542, #e6a82b);
+            border: none;
+            padding: 14px 30px;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #0b0e1a;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            white-space: nowrap;
+            font-family: inherit;
+            box-shadow: 0 8px 15px rgba(230, 168, 43, 0.3);
+        }
+
+        .search-box button:hover {
+            transform: scale(1.04);
+            background: linear-gradient(145deg, #ffd966, #f0b83a);
+            box-shadow: 0 10px 25px rgba(245, 197, 66, 0.5);
+        }
+
+        .search-box button i {
+            font-size: 1.2rem;
+        }
+
+        .info-note {
+            background: #1d2440;
+            border-radius: 30px;
+            padding: 16px 22px;
+            margin: 10px 0 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-right: 5px solid #f5c542;
+            font-size: 0.95rem;
+            color: #cbd3f0;
+        }
+
+        .info-note i {
+            color: #f5c542;
+            font-size: 1.6rem;
+        }
+
+        .result-area {
+            background: #0e1428;
+            border-radius: 30px;
+            padding: 18px 22px;
+            margin-top: 20px;
+            border: 1px solid #2a3457;
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            transition: 0.3s;
+        }
+
+        .result-area.show {
+            display: flex;
+        }
+
+        .result-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #1a213b;
+            padding: 10px 18px;
+            border-radius: 40px;
+            border-left: 4px solid #f5c542;
+            color: #d6defa;
+            font-weight: 500;
+        }
+
+        .result-item i {
+            width: 28px;
+            color: #f5c542;
+            font-size: 1.3rem;
+        }
+
+        .fake-message {
+            background: #282f4e;
+            border-radius: 30px;
+            padding: 18px 22px;
+            margin: 18px 0 12px;
+            text-align: center;
+            border: 1px solid #f5c542;
+            color: #f5e7b0;
+            font-weight: 500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .fake-message.show {
+            display: flex;
+        }
+
+        .fake-message i {
+            font-size: 1.8rem;
+            color: #ffb347;
+        }
+
+        /* حقل الرابط مع زر النسخ */
+        .link-container {
+            background: #0e1428;
+            border-radius: 60px;
+            padding: 10px 15px;
+            margin: 15px 0 10px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid #3f4a70;
+            transition: 0.3s;
+        }
+
+        .link-container.show {
+            display: flex;
+        }
+
+        .link-container input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 12px 10px;
+            font-size: 0.95rem;
+            color: #a8b5e0;
+            outline: none;
+            font-family: inherit;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .link-container .copy-btn {
+            background: linear-gradient(145deg, #2a335a, #1d2440);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            color: #f5c542;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            border: 1px solid #3f4a70;
+        }
+
+        .link-container .copy-btn:hover {
+            background: #3b4677;
+            border-color: #f5c542;
+            transform: scale(1.02);
+        }
+
+        .link-container .copy-btn i {
+            font-size: 1.1rem;
+        }
+
+        .btn-share {
+            background: #2a335a;
+            border: none;
+            padding: 16px 25px;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #f0f3ff;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            margin-top: 10px;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            border: 1px solid #4f5b88;
+        }
+
+        .btn-share:hover {
+            background: #3b4677;
+            transform: scale(1.01);
+            border-color: #f5c542;
+        }
+
+        .btn-share i {
+            font-size: 1.4rem;
+        }
+
+        .trick-message {
+            background: #3d1f2c;
+            border-radius: 30px;
+            padding: 18px 22px;
+            margin-top: 20px;
+            border-right: 8px solid #e74c6f;
+            display: none;
+            align-items: center;
+            gap: 18px;
+            color: #ffc9d6;
+            font-weight: 500;
+            font-size: 1.1rem;
+            box-shadow: 0 0 30px rgba(231, 76, 111, 0.2);
+        }
+
+        .trick-message.show {
+            display: flex;
+        }
+
+        .trick-message i {
+            font-size: 2.5rem;
+            color: #e74c6f;
+        }
+
+        .footer-note {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #606b94;
+            border-top: 1px solid #25305a;
+            padding-top: 20px;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .footer-note i {
+            color: #f5c542;
+        }
+
+        /* رسالة نجاح النسخ */
+        .copy-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1d2440;
+            color: #f5e7b0;
+            padding: 12px 28px;
+            border-radius: 60px;
+            border: 1px solid #f5c542;
+            font-weight: 500;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            z-index: 999;
+            animation: fadeUp 0.3s ease;
+        }
+
+        .copy-toast.show {
+            display: flex;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        @media (max-width: 550px) {
+            .card { padding: 25px 18px; }
+            .header h1 { font-size: 1.9rem; }
+            .search-box { flex-wrap: wrap; background: transparent; padding: 0; box-shadow: none; }
+            .search-box input { background: #131a2e; border-radius: 60px; padding: 18px 25px; border: 1px solid #3f4a70; }
+            .search-box button { width: 100%; justify-content: center; margin-top: 12px; }
+            .info-note { flex-direction: column; text-align: center; }
+            .link-container { flex-wrap: wrap; justify-content: center; }
+            .link-container input { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="header">
+        <h1><i class="fas fa-user-secret"></i> الباحث الإجتماعي</h1>
+        <div class="subtitle">
+            <i class="fas fa-search-location"></i> اكتشف حسابات الشخص المخفية
+        </div>
+    </div>
+
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔎 رقم الجوال أو اسم المستخدم ...">
+        <button id="searchBtn"><i class="fas fa-arrow-left"></i> إبحث</button>
+    </div>
+
+    <div class="info-note">
+        <i class="fas fa-robot"></i>
+        <span>⚡ نظام البحث الذكي يتطلب مشاركة الرابط مع 10 مجموعات للكشف عن الحسابات</span>
+    </div>
+
+    <!-- منطقة النتائج -->
+    <div id="resultArea" class="result-area">
+        <div class="result-item"><i class="fab fa-facebook-f"></i> فيسبوك: <span style="color:#f5c542;">ahmed_x_2024</span></div>
+        <div class="result-item"><i class="fab fa-instagram"></i> إنستغرام: <span style="color:#f5c542;">ahmed_insta_eg</span></div>
+        <div class="result-item"><i class="fab fa-twitter"></i> تويتر (X): <span style="color:#f5c542;">@ahmed_twit</span></div>
+        <div class="result-item"><i class="fab fa-tiktok"></i> تيك توك: <span style="color:#f5c542;">ahmed_tok</span></div>
+        <div class="result-item"><i class="fab fa-linkedin-in"></i> لينكدإن: <span style="color:#f5c542;">ahmed-linked</span></div>
+    </div>
+
+    <!-- حقل الرابط مع زر النسخ -->
+    <div id="linkContainer" class="link-container">
+        <i class="fas fa-link" style="color: #f5c542; font-size: 1.2rem;"></i>
+        <input type="text" id="siteLink" value="https://social-finder.vercel.app" readonly>
+        <button class="copy-btn" id="copyLinkBtn">
+            <i class="fas fa-copy"></i> نسخ الرابط
+        </button>
+    </div>
+
+    <!-- رسالة "شارك الرابط" -->
+    <div id="shareMessage" class="fake-message">
+        <i class="fas fa-share-alt"></i>
+        <span id="shareText">تم العثور على الحسابات! الآن شارك الرابط في 10 مجموعات لتفعيل العرض</span>
+    </div>
+
+    <!-- زر "تم المشاركة" -->
+    <button class="btn-share" id="shareBtn">
+        <i class="fas fa-check-circle"></i> تم المشاركة
+    </button>
+
+    <!-- رسالة الخدعة النهائية -->
+    <div id="trickMessage" class="trick-message">
+        <i class="fas fa-skull"></i>
+        <div>
+            <strong>😈 لم تتم مشاركة الرابط في 10 قروب!</strong><br>
+            <span style="font-size:0.9rem; opacity:0.8;">(هذا مجرد فيلم إجرامي يا صديقي 🎬)</span>
+        </div>
+    </div>
+
+    <div class="footer-note">
+        <i class="fas fa-film"></i> للمتعة والتعلم فقط .. لا تقم بإعادة التوجيه الحقيقي
+        <i class="fas fa-mask"></i>
+    </div>
+</div>
+
+<!-- رسالة نجاح النسخ -->
+<div id="copyToast" class="copy-toast">
+    <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+    <span>✅ تم نسخ الرابط بنجاح!</span>
+</div>
+
+<script>
+    (function() {
+        const searchBtn = document.getElementById('searchBtn');
+        const searchInput = document.getElementById('searchInput');
+        const resultArea = document.getElementById('resultArea');
+        const shareBtn = document.getElementById('shareBtn');
+        const trickMessage = document.getElementById('trickMessage');
+        const shareMessage = document.getElementById('shareMessage');
+        const shareText = document.getElementById('shareText');
+        const linkContainer = document.getElementById('linkContainer');
+        const copyBtn = document.getElementById('copyLinkBtn');
+        const siteLink = document.getElementById('siteLink');
+        const copyToast = document.getElementById('copyToast');
+
+        // تغيير الرابط هنا حسب موقعك على Vercel
+        // مثلاً: https://اسم-مشروعك.vercel.app
+        const MY_SITE_URL = 'https://social-media-finder8.vercel.app';
+        siteLink.value = MY_SITE_URL;
+
+        // عند البحث
+        searchBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            resultArea.classList.add('show');
+            linkContainer.classList.add('show'); // إظهار الرابط
+            shareMessage.classList.add('show');
+            shareText.textContent = 'تم العثور على الحسابات! الآن شارك الرابط في 10 مجموعات لتفعيل العرض';
+            
+            trickMessage.classList.remove('show');
+            
+            shareBtn.innerHTML = `<i class="fas fa-check-circle"></i> تم المشاركة`;
+            shareBtn.style.background = '#2a335a';
+            shareBtn.style.borderColor = '#4f5b88';
+            shareBtn.style.color = '#f0f3ff';
+        });
+
+        // نسخ الرابط
+        copyBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // تحديد النص ونسخه
+            siteLink.select();
+            siteLink.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(siteLink.value).then(() => {
+                // إظهار رسالة نجاح
+                copyToast.classList.add('show');
+                setTimeout(() => {
+                    copyToast.classList.remove('show');
+                }, 2000);
+            }).catch(() => {
+                // طريقة بديلة للنسخ
+                document.execCommand('copy');
+                copyToast.classList.add('show');
+                setTimeout(() => {
+                    copyToast.classList.remove('show');
+                }, 2000);
+            });
+        });
+
+        // عند الضغط على "تم المشاركة"
+        shareBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            if (!resultArea.classList.contains('show')) {
+                resultArea.classList.add('show');
+                linkContainer.classList.add('show');
+                shareMessage.classList.add('show');
+                shareText.textContent = 'تم العثور على الحسابات! الآن شارك الرابط في 10 مجموعات لتفعيل العرض';
+            }
+
+            trickMessage.classList.add('show');
+            shareText.textContent = '⚠️ لم تتم مشاركة الرابط في 10 قروب!';
+            
+            shareBtn.innerHTML = `<i class="fas fa-times-circle"></i> لم تتم المشاركة`;
+            shareBtn.style.background = '#3d1f2c';
+            shareBtn.style.borderColor = '#e74c6f';
+            shareBtn.style.color = '#ffb3c6';
+
+            setTimeout(() => {
+                shareBtn.innerHTML = `<i class="fas fa-check-circle"></i> تم المشاركة`;
+                shareBtn.style.background = '#2a335a';
+                shareBtn.style.borderColor = '#4f5b88';
+                shareBtn.style.color = '#f0f3ff';
+            }, 4000);
+        });
+
+        // البحث بالضغط على Enter
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchBtn.click();
+            }
+        });
+
+        // إخفاء العناصر عند التحميل
+        resultArea.classList.remove('show');
+        linkContainer.classList.remove('show');
+        shareMessage.classList.remove('show');
+        trickMessage.classList.remove('show');
+    })();
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+</body>
+</html>
